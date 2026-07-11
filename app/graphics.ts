@@ -83,8 +83,6 @@ export class Graphics {
   private phoenix: Phoenix;
   private globe: Globe;
 
-  private animationMixer?: AnimationMixer;
-
   private renderer: WebGLRenderer;
   private scene: Scene;
   private camera: PerspectiveCamera;
@@ -187,7 +185,7 @@ export class Graphics {
           y: 0,
           duration: 1,
         },
-        "-=0.3",
+        "+=0.4",
       );
 
     const updateTimeline = () => {
