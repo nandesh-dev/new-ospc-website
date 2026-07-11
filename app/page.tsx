@@ -12,7 +12,7 @@ export default function Home() {
   }, [canvas.current]);
 
   return (
-    <div className="h-dvh p-24 overflow-y-auto">
+    <div className="h-dvh p-24 overflow-y-auto" id="container">
       <canvas
         className="-z-10 absolute top-0 left-0 right-0 bottom-0"
         ref={canvas}
@@ -35,7 +35,7 @@ export default function Home() {
           </nav>
         </div>
       </section>
-      <section className="pt-[40vh] h-screen">
+      <section className="pt-[40vh] h-screen" id="hero">
         <p className="text-3xl mb-8">VIT Chennai</p>
         <h1 className="flex flex-col gap-2 mb-16">
           <span className="text-primary uppercase font-bold text-7xl">
@@ -49,7 +49,7 @@ export default function Home() {
           Code Together. Build Forever.
         </p>
       </section>
-      <section className="h-screen">
+      <section className="h-screen" id="info">
         <h2 className="text-right">#TODO Club Info</h2>
       </section>
       <section className="h-screen">
