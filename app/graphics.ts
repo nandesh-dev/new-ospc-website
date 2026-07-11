@@ -2,6 +2,7 @@ import { GLTF, GLTFLoader } from "three/examples/jsm/Addons.js";
 import {
   AnimationMixer,
   Group,
+  Material,
   Mesh,
   MeshBasicMaterial,
   Object3D,
@@ -9,7 +10,7 @@ import {
   Scene,
   WebGLRenderer,
 } from "three";
-import { animate, createTimeline, onScroll, Timeline } from "animejs";
+import { createTimeline, Timeline } from "animejs";
 import "animejs/adapters/three";
 
 async function loadWireframeModel(url: string): Promise<[GLTF, Group]> {
@@ -25,11 +26,11 @@ async function loadWireframeModel(url: string): Promise<[GLTF, Group]> {
 
   meshes.forEach((child) => {
     const baseMaterial = new MeshBasicMaterial({
-      color: 0x000000,
+      color: 0x181719,
     });
 
     const wireframeMat = new MeshBasicMaterial({
-      color: 0xffffff,
+      color: (child.material as Material).name,
       wireframe: true,
     });
 
@@ -41,6 +42,23 @@ async function loadWireframeModel(url: string): Promise<[GLTF, Group]> {
   });
 
   return [gltf, model];
+}
+
+class Globe {
+  public object3D: Group;
+  public animationMixer?: AnimationMixer;
+
+  constructor() {
+    this.object3D = new Group();
+
+    loadWireframeModel("/assets/models/globe.glb").then(([gltf, model]) => {
+      this.object3D.add(model);
+
+      this.animationMixer = new AnimationMixer(model);
+      const action = this.animationMixer.clipAction(gltf.animations[0]);
+      action.play();
+    });
+  }
 }
 
 class Phoenix {
@@ -63,8 +81,8 @@ class Phoenix {
 export class Graphics {
   private lastRenderTimestamp: number;
   private phoenix: Phoenix;
+  private globe: Globe;
 
-  private phoenixPointer?: Object3D;
   private animationMixer?: AnimationMixer;
 
   private renderer: WebGLRenderer;
@@ -91,23 +109,14 @@ export class Graphics {
     this.phoenix = new Phoenix();
     this.scene.add(this.phoenix.object3D);
 
-    loadWireframeModel("/assets/models/scene.glb").then(([gltf, model]) => {
-      //this.scene.add(model);
-
-      model.traverse((object) => {
-        if (object.name == "Phoenix_Pointer") {
-          this.phoenixPointer = object;
-        }
-      });
-
-      this.animationMixer = new AnimationMixer(model);
-      const action = this.animationMixer.clipAction(gltf.animations[0]);
-      action.play();
-    });
+    this.globe = new Globe();
+    this.scene.add(this.globe.object3D);
 
     this.phoenix.object3D.rotation.y = Math.PI;
-    this.phoenix.object3D.position.y = -3;
     this.phoenix.object3D.position.x = 6;
+    this.phoenix.object3D.position.y = -3;
+
+    this.globe.object3D.position.set(-25, -13, -5);
 
     const container = document.getElementById("container") || undefined;
 
@@ -122,26 +131,64 @@ export class Graphics {
         ease: "inOutQuad",
         duration: 0.1,
       })
+      .add(
+        this.globe.object3D,
+        {
+          x: -25,
+          y: -13,
+          z: -5,
+          duration: 0.1,
+        },
+        "-=0.1",
+      )
       .add(this.phoenix.object3D, {
         rotateZ: -40,
         x: 16,
         y: 6,
         duration: 1,
       })
-      .add(this.phoenix.object3D, {
-        rotateZ: 10,
-        rotateX: 0,
-        x: -8,
-        y: -2,
-        duration: 1,
-      })
-      .add(this.phoenix.object3D, {
-        rotateZ: 0,
-        rotateX: 90,
-        x: 0,
-        y: 0,
-        duration: 1,
-      });
+      .add(
+        this.globe.object3D,
+        {
+          x: -20,
+          y: -4,
+          z: -5,
+          duration: 1,
+        },
+        "-=1",
+      )
+      .add(
+        this.phoenix.object3D,
+        {
+          rotateZ: 10,
+          rotateX: 0,
+          x: -14,
+          y: -3,
+          duration: 1,
+        },
+        "+=0.4",
+      )
+      .add(
+        this.globe.object3D,
+        {
+          x: -20,
+          y: 30,
+          z: 50,
+          duration: 1,
+        },
+        "-=1",
+      )
+      .add(
+        this.phoenix.object3D,
+        {
+          rotateZ: 0,
+          rotateX: 90,
+          x: 0,
+          y: 0,
+          duration: 1,
+        },
+        "-=0.3",
+      );
 
     const updateTimeline = () => {
       if (!container) return;
@@ -165,13 +212,15 @@ export class Graphics {
         0,
         Math.min(
           this.timeline.currentTime +
-            (this.scrollPosition - this.timeline.currentTime) * 0.01,
+            (this.scrollPosition - this.timeline.currentTime) * 0.04,
           this.timeline.duration,
         ),
       ),
     );
 
     this.phoenix.animationMixer?.update(delta / 1000);
+    this.globe.object3D.rotation.y =
+      -(currentTimestamp * 0.0001) % (2 * Math.PI);
     //this.animationMixer?.update(delta / 1000);
     this.renderer.render(this.scene, this.camera);
   }
