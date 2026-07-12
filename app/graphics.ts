@@ -5,7 +5,6 @@ import {
   Material,
   Mesh,
   MeshBasicMaterial,
-  Object3D,
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
@@ -46,17 +45,12 @@ async function loadWireframeModel(url: string): Promise<[GLTF, Group]> {
 
 class Globe {
   public object3D: Group;
-  public animationMixer?: AnimationMixer;
 
   constructor() {
     this.object3D = new Group();
 
-    loadWireframeModel("/assets/models/globe.glb").then(([gltf, model]) => {
+    loadWireframeModel("/assets/models/globe.glb").then(([_, model]) => {
       this.object3D.add(model);
-
-      this.animationMixer = new AnimationMixer(model);
-      const action = this.animationMixer.clipAction(gltf.animations[0]);
-      action.play();
     });
   }
 }
@@ -160,7 +154,7 @@ export class Graphics {
         {
           rotateZ: 10,
           rotateX: 0,
-          x: -14,
+          x: -20,
           y: -3,
           duration: 1,
         },
@@ -185,7 +179,17 @@ export class Graphics {
           y: 0,
           duration: 1,
         },
-        "+=0.4",
+        "+=1",
+      )
+      .add(
+        this.globe.object3D,
+        {
+          x: -20,
+          y: 60,
+          z: 50,
+          duration: 1,
+        },
+        "-=1",
       );
 
     const updateTimeline = () => {

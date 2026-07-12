@@ -3,6 +3,34 @@
 import { useEffect, useRef } from "react";
 import { Graphics } from "./graphics";
 
+const Events = [
+  { name: "Spectrum" },
+  { name: "VOID" },
+  { name: "XXXX" },
+  { name: "XXXX" },
+  { name: "XXXX" },
+];
+
+function Event({ name }: { name: string }) {
+  return (
+    <div className="backdrop-blur-sm p-8">
+      <h3 className="text-2xl font-semibold mb-8">{name}</h3>
+      <img
+        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.qURrkCsa1S0S4jeC28DQBAHaEw%3Fpid%3DApi&f=1&ipt=6cceb97ec3970e977152ec0cb48f5424bcbf0f5f63c9316ecbf984aee36c0d5d"
+        className="mb-4"
+      />
+      <p>
+        Anim in duis exercitation. Mollit Lorem et excepteur veniam cillum
+        dolore labore dolore Lorem consectetur pariatur mollit laborum. Mollit
+        ea aute sint nostrud irure tempor qui cillum. Est consequat ex in Lorem
+        reprehenderit elit deserunt in aliqua amet veniam nulla fugiat et. Non
+        minim non Lorem. Cillum mollit deserunt adipisicing nisi non aute cillum
+        excepteur. Veniam fugiat irure nostrud enim.
+      </p>
+    </div>
+  );
+}
+
 export default function Home() {
   const canvas = useRef<HTMLCanvasElement>(null);
 
@@ -55,26 +83,30 @@ export default function Home() {
             // About Us
           </h2>
           <p className="text-xl text-justify backdrop-blur-sm p-16">
-            Non dolor fugiat in proident cupidatat ea pariatur nulla duis sunt
-            sunt dolore eiusmod aute. Tempor et voluptate incididunt ut. Magna
-            sint do amet mollit excepteur nisi ipsum anim enim consequat
-            pariatur id. Non minim excepteur incididunt. Laborum est do anim
-            pariatur sint commodo consequat consectetur culpa. Est anim nostrud
-            duis ea fugiat consequat ut esse. Qui exercitation nulla amet culpa
-            amet occaecat quis Lorem consectetur pariatur. Est consequat et ea
-            sit voluptate. Id esse fugiat cillum deserunt in elit adipisicing
-            cillum sit culpa ipsum ex. Et culpa et anim veniam sunt et ut
-            occaecat nulla aliquip ex do amet ipsum. Laborum in aliquip
-            reprehenderit eu velit ullamco officia fugiat fugiat exercitation
-            sunt anim.
+            The Open Source Programming Club (OSPC) at VIT is a student-driven
+            initiative aimed at fostering a culture of open-source development.
+            Our mission is to empower members with practical skills,
+            community-driven projects, and insights into collaborative software
+            development. <br />
+            We believe in the power of open-source to bring about positive
+            change and innovation. Whether you're an experienced developer or
+            just getting started, join us in building a world where knowledge is
+            freely shared, and everyone has the opportunity to contribute!
           </p>
         </div>
       </section>
-      <section className="h-screen mb-94">
+      <section className="mb-94">
         <h2 className="text-5xl font-semibold uppercase mb-16">// Events</h2>
-        <div className="pl-[30dvw]">
-          <div className="h-[80dvh] outline outline-white flex justify-center align-middle backdrop-blur-sm p-16">
-            #TODO Fetch events from backend
+        <div className="pl-[30dvw] grid grid-cols-2">
+          <div className="flex flex-col gap-16">
+            {Events.filter((_, i) => !(i % 2)).map(({ name }) => {
+              return <Event key={name} name={name} />;
+            })}
+          </div>
+          <div className="flex flex-col gap-16 pt-64">
+            {Events.filter((_, i) => i % 2).map(({ name }) => {
+              return <Event key={name} name={name} />;
+            })}
           </div>
         </div>
       </section>
