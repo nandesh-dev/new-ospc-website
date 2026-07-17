@@ -196,7 +196,7 @@ export class Graphics {
           this.timeline.currentTime +
             Math.min(
               this.scrollPosition - this.timeline.currentTime + 0.5,
-              0.2,
+              0.4,
             ) *
               0.04,
           this.timeline.duration,
