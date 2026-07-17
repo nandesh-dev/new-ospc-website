@@ -28,7 +28,7 @@ export default function BackgroundWrapper({
   };
 
   return (
-    <div className="h-dvh p-24 px-42 overflow-y-auto" id="container">
+    <div className="h-dvh p-4 md:p-24 md:px-42 overflow-y-auto" id="container">
       {videoMounted && (
         <video
           autoPlay
@@ -46,45 +46,6 @@ export default function BackgroundWrapper({
         ref={canvasRef}
       />
 
-      {/* Moved Global Navigation Header */}
-      <section className="z-50 absolute left-0 top-0 w-full px-24 py-12">
-        <div className="flex justify-between border-b-2 border-light py-2">
-          <span className="text-xl font-bold">OSPC</span>
-          <nav>
-            <ul className="text-lg flex flex-row gap-8">
-              <li>
-                <Link href="/" className="hover:text-primary transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/events"
-                  className="hover:text-primary transition-colors"
-                >
-                  Events
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/projects"
-                  className="hover:text-primary transition-colors"
-                >
-                  Projects
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/recruitments"
-                  className="hover:text-primary transition-colors"
-                >
-                  Apply
-                </Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </section>
       {children}
     </div>
   );

@@ -102,8 +102,8 @@ export default function EventsPage() {
       {/* Title & Search Panel Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 border-b-2 border-light pb-6">
         <div>
-          <h1 className="text-5xl font-bold uppercase text-primary mb-8">
-            // Club Events
+          <h1 className="text-5xl font-bold uppercase text-white mb-8">
+            // Events
           </h1>
           <p className="text-gray font-mono">
             Explore workshops, hackathons, and open-source sprints.

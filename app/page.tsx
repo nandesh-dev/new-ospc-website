@@ -127,9 +127,12 @@ export default function Home() {
     <>
       <section className="pt-[40vh] h-[50vh] mb-24" id="hero"></section>
 
-      <section className="flex flex-row justify-end h-screen mb-36" id="info">
-        <div className="w-[40dvw]">
-          <h2 className="text-right text-5xl font-semibold uppercase mb-16">
+      <section
+        className="flex flex-row justify-end min-h-screen mb-36"
+        id="info"
+      >
+        <div className="md:pl-[40dvw]">
+          <h2 className="md:text-right text-5xl font-semibold uppercase mb-16">
             // about us
           </h2>
           <p className="text-xl text-left backdrop-blur-sm p-8 bg-white/5 border border-white/10 text-light/80 leading-relaxed">
@@ -148,7 +151,7 @@ export default function Home() {
 
       <section className="mb-94">
         <h2 className="text-5xl font-semibold uppercase mb-16">// events</h2>
-        <div className="pl-[30dvw] grid grid-cols-2 gap-16">
+        <div className="md:pl-[30dvw] grid grid-cols-1 md:grid-cols-2 gap-16">
           <div className="flex flex-col gap-16">
             {events
               .filter((_, i) => !(i % 2))
@@ -168,8 +171,8 @@ export default function Home() {
 
       {/* core members boardroom */}
       <section className="min-h-screen mb-36">
-        <h2 className="text-center text-5xl font-semibold uppercase mb-20">
-          // core boardroom
+        <h2 className="text-center text-4xl md:text-5xl font-semibold uppercase mb-20">
+          // core members
         </h2>
 
         <div className="max-w-6xl mx-auto px-8 space-y-16">

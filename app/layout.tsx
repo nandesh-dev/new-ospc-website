@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import BackgroundWrapper from "./components/background_wrapper";
+import Navbar from "./components/navbar";
 
 const roboto = Roboto_Mono({
   variable: "--font-roboto",
@@ -21,7 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${roboto.variable} antialiased`}>
       <body className="bg-background text-light">
-        <BackgroundWrapper>{children}</BackgroundWrapper>
+        <BackgroundWrapper>
+          <Navbar />
+          {children}
+        </BackgroundWrapper>
       </body>
     </html>
   );
