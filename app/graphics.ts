@@ -105,10 +105,8 @@ export class Graphics {
     this.scene.add(this.globe.object3D);
 
     this.phoenix.object3D.rotation.y = Math.PI;
-    this.phoenix.object3D.position.x = 6;
-    this.phoenix.object3D.position.y = -3;
 
-    this.globe.object3D.position.set(-25, -13, -5);
+    this.globe.object3D.position.set(-25, -30, -5);
 
     const container = document.getElementById("container") || undefined;
 
@@ -117,37 +115,20 @@ export class Graphics {
       autoplay: false,
     })
       .add(this.phoenix.object3D, {
-        rotateZ: 0,
-        x: 6,
-        y: -3,
-        ease: "inOutQuad",
-        duration: 0.1,
-      })
-      .add(
-        this.globe.object3D,
-        {
-          x: -25,
-          y: -13,
-          z: -5,
-          duration: 0.1,
-        },
-        "-=0.1",
-      )
-      .add(this.phoenix.object3D, {
         rotateZ: -40,
         x: 16,
         y: 6,
-        duration: 1,
+        duration: 0.4,
       })
       .add(
         this.globe.object3D,
         {
           x: -20,
-          y: -4,
+          y: -7,
           z: -5,
-          duration: 1,
+          duration: 0.4,
         },
-        "-=1",
+        "-=0.4",
       )
       .add(
         this.phoenix.object3D,
@@ -201,10 +182,9 @@ export class Graphics {
     container?.addEventListener("resize", updateTimeline);
 
     this.lastRenderTimestamp = Date.now();
-    this.render();
   }
 
-  private render() {
+  public render() {
     requestAnimationFrame(() => this.render());
     const currentTimestamp = Date.now();
     const delta = currentTimestamp - this.lastRenderTimestamp;
@@ -214,7 +194,11 @@ export class Graphics {
         0,
         Math.min(
           this.timeline.currentTime +
-            (this.scrollPosition - this.timeline.currentTime) * 0.04,
+            Math.min(
+              this.scrollPosition - this.timeline.currentTime + 0.5,
+              0.2,
+            ) *
+              0.04,
           this.timeline.duration,
         ),
       ),

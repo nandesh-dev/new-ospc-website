@@ -1,125 +1,227 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { Graphics } from "./graphics";
-
-const Events = [
-  { name: "Spectrum" },
-  { name: "VOID" },
-  { name: "XXXX" },
-  { name: "XXXX" },
-  { name: "XXXX" },
+const events = [
+  { name: "spectrum" },
+  { name: "void" },
+  { name: "xxxx" },
+  { name: "xxx" },
+  { name: "xx" },
 ];
 
+interface Member {
+  name: string;
+  role: string;
+  githuburl?: string;
+}
+
+const executive_team: Member[] = [
+  { name: "aarav sharma", role: "president", githuburl: "https://github.com" },
+  {
+    name: "ananya iyer",
+    role: "vice president",
+    githuburl: "https://github.com",
+  },
+];
+
+const single_lead_depts: Member[] = [
+  { name: "rohan das", role: "design lead", githuburl: "https://github.com" },
+  {
+    name: "meera nair",
+    role: "operations lead",
+    githuburl: "https://github.com",
+  },
+  {
+    name: "kabir mehta",
+    role: "pr & marketing lead",
+    githuburl: "https://github.com",
+  },
+  { name: "diya kaplan", role: "events lead", githuburl: "https://github.com" },
+];
+
+const dev_leads: Member[] = [
+  {
+    name: "siddharth verma",
+    role: "technical lead (core)",
+    githuburl: "https://github.com",
+  },
+  {
+    name: "kriti joshi",
+    role: "technical lead (web)",
+    githuburl: "https://github.com",
+  },
+];
+
+// Reusable Member Card Component
+function MemberCard({
+  member,
+  roleColorClass = "text-gray",
+}: {
+  member: Member;
+  roleColorClass?: string;
+}) {
+  return (
+    <div className="backdrop-blur-sm p-6 bg-white/5 border border-white/10 flex flex-row items-center gap-6 hover:border-secondary transition-all duration-300 group">
+      <div className="w-20 h-20 bg-white/10 border border-white/10 flex-shrink-0 overflow-hidden rounded-sm">
+        <img
+          src={`https://api.dicebear.com/7.x/bottts/svg?seed=${member.name}`}
+          alt={member.name}
+          className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-300"
+        />
+      </div>
+      <div className="flex flex-col justify-between h-full py-1">
+        <div className="font-mono">
+          <span
+            className={`${roleColorClass} text-xs uppercase tracking-widest`}
+          >
+            // {member.role}
+          </span>
+          <h4 className="text-xl font-bold text-light mt-1 group-hover:text-secondary transition-colors uppercase">
+            {member.name}
+          </h4>
+        </div>
+        {member.githuburl && (
+          <a
+            href={member.githuburl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 text-xs font-mono text-primary hover:text-white transition-colors flex items-center gap-1"
+          >
+            [view_profile]
+          </a>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Event Component (Capitalized to ensure proper React rendering)
 function Event({ name }: { name: string }) {
   return (
-    <div className="backdrop-blur-sm p-8">
-      <h3 className="text-2xl font-semibold mb-8">{name}</h3>
-      <img
-        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.qURrkCsa1S0S4jeC28DQBAHaEw%3Fpid%3DApi&f=1&ipt=6cceb97ec3970e977152ec0cb48f5424bcbf0f5f63c9316ecbf984aee36c0d5d"
-        className="mb-4"
-      />
-      <p>
-        Anim in duis exercitation. Mollit Lorem et excepteur veniam cillum
-        dolore labore dolore Lorem consectetur pariatur mollit laborum. Mollit
-        ea aute sint nostrud irure tempor qui cillum. Est consequat ex in Lorem
-        reprehenderit elit deserunt in aliqua amet veniam nulla fugiat et. Non
-        minim non Lorem. Cillum mollit deserunt adipisicing nisi non aute cillum
-        excepteur. Veniam fugiat irure nostrud enim.
-      </p>
+    <div className="backdrop-blur-sm p-8 bg-white/5 border border-white/10 flex flex-col justify-between h-full">
+      <div>
+        <div className="flex justify-between items-baseline mb-6 border-b border-white/10 pb-2">
+          <h3 className="text-2xl font-semibold text-secondary uppercase">
+            {name}
+          </h3>
+        </div>
+        <img
+          src="https://external-content.duckduckgo.com/iu/?u=https%3a%2f%2ftse1.mm.bing.net%2fth%2fid%2foip.qurrkcsa1s0s4jec28dqbahaew%3fpid%3dapi&f=1&ipt=6cceb97ec3970e977152ec0cb48f5424bcbf0f5f63c9316ecbf984aee36c0d5d"
+          className="mb-6 w-full object-cover h-48 filter grayscale hover:grayscale-0 transition-all duration-300"
+          alt={name}
+        />
+        <p className="text-light/80 text-justify text-base leading-relaxed">
+          anim in duis exercitation. mollit lorem et excepteur veniam cillum
+          dolore labore dolore lorem consectetur pariatur mollit laborum. mollit
+          ea aute sint nostrud irure tempor qui cillum. est consequat ex in
+          lorem reprehenderit elit deserunt in aliqua amet veniam nulla fugiat
+          et. non minim non lorem. cillum mollit deserunt adipisicing nisi non
+          aute cillum excepteur. veniam fugiat irure nostrud enim.
+        </p>
+      </div>
     </div>
   );
 }
 
 export default function Home() {
-  const canvas = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    if (!canvas.current) return;
-    new Graphics(canvas.current);
-  }, [canvas.current]);
-
   return (
-    <div className="h-dvh p-24 overflow-y-auto" id="container">
-      <canvas
-        className="-z-10 absolute top-0 left-0 right-0 bottom-0"
-        ref={canvas}
-      />
-      <section className="z-50 absolute left-0 top-0 w-full px-24 py-12">
-        <div className="flex justify-between border-b-2 border-light py-2">
-          <span className="text-xl font-bold">OSPC</span>
-          <nav>
-            <ul className="text-lg flex flex-row gap-4">
-              <li>
-                <a>Home</a>
-              </li>
-              <li>
-                <a>Events</a>
-              </li>
-              <li>
-                <a>Leaderboards</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </section>
-      <section className="pt-[40vh] h-screen mb-24" id="hero">
-        <p className="text-3xl mb-8">VIT Chennai</p>
-        <h1 className="flex flex-col gap-2 mb-16">
-          <span className="text-primary uppercase font-bold text-7xl">
-            Open Source
-          </span>
-          <span className="text-secondary uppercase font-bold text-7xl">
-            Programming Club
-          </span>
-        </h1>
-        <p className="text-gray uppercase text-3xl text-right">
-          Code Together. Build Forever.
-        </p>
-      </section>
+    <>
+      <section className="pt-[40vh] h-[50vh] mb-24" id="hero"></section>
+
       <section className="flex flex-row justify-end h-screen mb-36" id="info">
         <div className="w-[40dvw]">
           <h2 className="text-right text-5xl font-semibold uppercase mb-16">
-            // About Us
+            // about us
           </h2>
-          <p className="text-xl text-justify backdrop-blur-sm p-16">
-            The Open Source Programming Club (OSPC) at VIT is a student-driven
+          <p className="text-xl text-left backdrop-blur-sm p-8 bg-white/5 border border-white/10 text-light/80 leading-relaxed">
+            the open source programming club (ospc) at vit is a student-driven
             initiative aimed at fostering a culture of open-source development.
-            Our mission is to empower members with practical skills,
+            our mission is to empower members with practical skills,
             community-driven projects, and insights into collaborative software
             development. <br />
-            We believe in the power of open-source to bring about positive
-            change and innovation. Whether you're an experienced developer or
+            we believe in the power of open-source to bring about positive
+            change and innovation. whether you're an experienced developer or
             just getting started, join us in building a world where knowledge is
-            freely shared, and everyone has the opportunity to contribute!
+            frely shared, and everyone has the opportunity to contribute!
           </p>
         </div>
       </section>
+
       <section className="mb-94">
-        <h2 className="text-5xl font-semibold uppercase mb-16">// Events</h2>
-        <div className="pl-[30dvw] grid grid-cols-2">
+        <h2 className="text-5xl font-semibold uppercase mb-16">// events</h2>
+        <div className="pl-[30dvw] grid grid-cols-2 gap-16">
           <div className="flex flex-col gap-16">
-            {Events.filter((_, i) => !(i % 2)).map(({ name }) => {
-              return <Event key={name} name={name} />;
-            })}
+            {events
+              .filter((_, i) => !(i % 2))
+              .map(({ name }) => (
+                <Event key={name} name={name} />
+              ))}
           </div>
           <div className="flex flex-col gap-16 pt-64">
-            {Events.filter((_, i) => i % 2).map(({ name }) => {
-              return <Event key={name} name={name} />;
-            })}
+            {events
+              .filter((_, i) => i % 2)
+              .map(({ name }) => (
+                <Event key={name} name={name} />
+              ))}
           </div>
         </div>
       </section>
-      <section className="h-screen">
-        <h2 className="text-center text-5xl font-semibold uppercase mb-16">
-          // Core Members
+
+      {/* core members boardroom */}
+      <section className="min-h-screen mb-36">
+        <h2 className="text-center text-5xl font-semibold uppercase mb-20">
+          // core boardroom
         </h2>
-        <div className="px-[10dvw]">
-          <div className="h-[180dvh] outline outline-white flex justify-center align-middle backdrop-blur-sm p-16">
-            #TODO Add core members list
+
+        <div className="max-w-6xl mx-auto px-8 space-y-16">
+          {/* executive branch (president & vp) */}
+          <div>
+            <div className="font-mono text-xs text-gray uppercase tracking-widest mb-4 border-b border-white/10 pb-2">
+              // executive council
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {executive_team.map((member) => (
+                <MemberCard
+                  key={member.name}
+                  member={member}
+                  roleColorClass="text-gray"
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* development unit */}
+          <div>
+            <div className="font-mono text-xs text-secondary uppercase tracking-widest mb-4 border-b border-white/10 pb-2">
+              // development division
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {dev_leads.map((member) => (
+                <MemberCard
+                  key={member.name}
+                  member={member}
+                  roleColorClass="text-secondary"
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* departmental units */}
+          <div>
+            <div className="font-mono text-xs text-gray uppercase tracking-widest mb-4 border-b border-white/10 pb-2">
+              // operational departments
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {single_lead_depts.map((member) => (
+                <MemberCard
+                  key={member.name}
+                  member={member}
+                  roleColorClass="text-gray"
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }
